@@ -33,14 +33,32 @@ class Book:
         return True
 
     def set_rating (self, rating: int) -> bool:
-        if rating != Book.EXCELLENT and rating != Book.GOOD and rating != Book.BAD:
+        if rating not in (Book.EXCELLENT, Book.GOOD, Book.BAD):
             return False
+        else:
+            self.rating = rating
+            return True
 
     def get_notes_of_page (self, page: int) -> list[Note]:
-        pass
+        nota_obtenida = []
+        for notes in self.notes:
+            if notes.page == page:
+                nota_obtenida.append(notes)
+        return nota_obtenida
 
-    def page_with_most_notes (self) -> int:
-        pass
+    def page_with_most_notes(self) -> int:
+        if not self.notes:
+            return -1
+
+        contador = {}
+
+        for note in self.notes:
+            if note.page in contador:
+                contador[note.page] += 1
+            else:
+                contador[note.page] = 1
+
+        return max(contador, key=contador.get)
 
     def __str__ (self) -> str:
         return f"ISBN: {self.isbn}\nTitle: {self.title}\nAuthor: {self.author}\nPages: {self.pages}\nRating: {self.rating}"
