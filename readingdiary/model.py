@@ -101,7 +101,26 @@ class ReadingDiary:
             return False
         return book.set_rating(rating)
 
-    def book_with_most_notes (self) -> Book | None:
+    def book_with_most_notes(self) -> Book | None:
+
+        if not self.books:
+            return None
+
+        book_with_most = None
+        max_notes = 0
+
+        for book in self.books.values():
+            notes_count = len(book.notes)
+
+            if notes_count > max_notes:
+                max_notes = notes_count
+                book_with_most = book
+
+        if max_notes == 0:
+            return None
+
+        return book_with_most
+
 
 
 
