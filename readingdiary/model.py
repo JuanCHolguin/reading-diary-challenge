@@ -61,20 +61,39 @@ class Book:
         return max(contador, key=contador.get)
 
     def __str__ (self) -> str:
-        return f"ISBN: {self.isbn}\nTitle: {self.title}\nAuthor: {self.author}\nPages: {self.pages}\nRating: {self.rating}"
+        ratings = {
+            Book.EXCELLENT: "excellent",
+            Book.GOOD: "good",
+            Book.BAD: "bad",
+            Book.UNRATED: "unrated"
+        }
+        rating = ratings[self.rating]
+
+        return f"ISBN: {self.isbn}\nTitle: {self.title}\nAuthor: {self.author}\nPages: {self.pages}\nRating: {rating}"
 
 class ReadingDiary:
     def __init__(self):
         self.books: dict[str, Book] = {}
 
     def add_book (self, isbn: str, title: str, author: str, pages: int) -> bool:
-        pass
+
+        if isbn in self.books:
+            return False
+        book = Book(isbn, title, author, pages)
+        self.books[isbn] = book
+
+        return True
 
     def search_by_isbn (self, isbn: str) -> Book | None:
-        pass
+        if isbn in self.books:
+            return self.books[isbn]
+        return None
 
     def add_note_to_book (self, isbn: str, text: str, page: int, date: datetime) -> bool:
-        pass
+        book = self.search_by_isbn(isbn)
+        if book is None:
+            return False
+        return book.add_note(text, page, date)
 
     def rate_book(self, isbn: str, rating: int) -> bool:
         book = self.search_by_isbn(isbn)
@@ -83,7 +102,7 @@ class ReadingDiary:
         return book.set_rating(rating)
 
     def book_with_most_notes (self) -> Book | None:
-        pass
+
 
 
 
